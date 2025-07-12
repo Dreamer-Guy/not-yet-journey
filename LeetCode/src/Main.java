@@ -16,8 +16,10 @@ public class Main {
         int[]arr=new int[]{2,3,1,1,4};
         int k=3;
 
-        String s="9801982396";
-        var t=anonymousProblems.isAdditiveNumber(s);
+        String[] strs = {"10", "0001", "111001", "1", "0"};
+        int m=5;
+        int n=3;
+        var t= anonymousProblems.findMaxForm(strs,m,n);
         System.out.println(t);
     }
 }

@@ -1,4 +1,6 @@
+import java.awt.*;
 import java.util.*;
+import java.util.List;
 
 public class AnonymousProblems {
     //url: https://leetcode.com/problems/zigzag-conversion/description/
@@ -177,5 +179,98 @@ public class AnonymousProblems {
         }
         return false;
     }
-    
+
+    private int getEndingOfMaxSubsequence(String s,int start){
+        int end=start;
+        int n=s.length();
+        char nextChar=s.charAt(start);
+        while(end<n && s.charAt(end)==nextChar){
+            if(nextChar=='z'){
+                nextChar='a';
+            }
+            else{
+                nextChar+=1;
+            }
+            end+=1;
+        }
+        return end;
+    }
+    private void addToSet(Set<String> set,String cur){
+        int n=cur.length();
+        for(int i=1;i<=n;++i){
+            for(int j=0;j<=n-i;++j){
+                String t=cur.substring(j,j+i);
+                set.add(t);
+            }
+        }
+    }
+    //url: https://leetcode.com/problems/unique-substrings-in-wraparound-string/description/
+    public int findSubstringInWraproundString(String s) {
+        if(s.isEmpty()){
+            return 0;
+        }
+        Set<String> set=new TreeSet<>();
+        int n=s.length();
+        for(int i=0;i<n;++i){
+            int end=getEndingOfMaxSubsequence(s,i);
+            String cur=s.substring(i,end);
+            addToSet(set,cur);
+        }
+        for(String t:set){
+            System.out.println(t);
+        }
+        return set.size();
+    }
+
+
+    private int count_target_digit(String s,char digit){
+        int count=0;
+        int n=s.length();
+        for(int i=0;i<n;++i){
+            if(s.charAt(i)==digit){
+                count+=1;
+            }
+        }
+        return count;
+    }
+    private int solve_findMaxForm(int size,int index,
+                                  List<int[]>count_digit,
+                                  int m,int n,
+                                  int[][][]dp){
+        if(index>=size){
+            return 0;
+        }
+        if(dp[index][m][n]!=-1){
+            return dp[index][m][n];
+        }
+        int taking=0;
+        if(count_digit.get(index)[0]<=m && count_digit.get(index)[1]<=n){
+            taking=1+solve_findMaxForm(size,index+1,count_digit,
+                    m-count_digit.get(index)[0],n-count_digit.get(index)[1],
+                    dp);
+        }
+        int notTaking=solve_findMaxForm(size,index+1,count_digit,m,n,dp);
+        return dp[index][m][n]=Math.max(taking,notTaking);
+    }
+    //url: https://leetcode.com/problems/ones-and-zeroes/
+    public int findMaxForm(String[] strs, int m, int n) {
+        int size=strs.length;
+        List<int[]> count_digit=new ArrayList<>();
+        for(int i=0;i<size;++i){
+            String s=strs[i];
+            int[] t=new int[2];
+            t[0]=count_target_digit(s,'0');
+            t[1]=s.length()-t[0];
+            count_digit.add(t);
+        }
+        int[][][] dp=new int[size][m+1][n+1];
+        for(var t:dp){
+            for(int i=0;i<m+1;++i){
+                for(int j=0;j<n+1;++j){
+                    t[i][j]=-1;
+                }
+            }
+        }
+        return solve_findMaxForm(size,0,count_digit,m,n,dp);
+    }
 }
