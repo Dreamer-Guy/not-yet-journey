@@ -180,46 +180,32 @@ public class AnonymousProblems {
         return false;
     }
 
-    private int getEndingOfMaxSubsequence(String s,int start){
-        int end=start;
-        int n=s.length();
-        char nextChar=s.charAt(start);
-        while(end<n && s.charAt(end)==nextChar){
-            if(nextChar=='z'){
-                nextChar='a';
-            }
-            else{
-                nextChar+=1;
-            }
-            end+=1;
-        }
-        return end;
-    }
-    private void addToSet(Set<String> set,String cur){
-        int n=cur.length();
-        for(int i=1;i<=n;++i){
-            for(int j=0;j<=n-i;++j){
-                String t=cur.substring(j,j+i);
-                set.add(t);
-            }
-        }
+
+    private boolean isContinuous(char pre,char cur){
+        return pre=='z'?cur=='a':cur==pre+1;
     }
     //url: https://leetcode.com/problems/unique-substrings-in-wraparound-string/description/
     public int findSubstringInWraproundString(String s) {
-        if(s.isEmpty()){
-            return 0;
-        }
-        Set<String> set=new TreeSet<>();
+        int[] alphabet=new int[26];
         int n=s.length();
+        int count=0;
         for(int i=0;i<n;++i){
-            int end=getEndingOfMaxSubsequence(s,i);
-            String cur=s.substring(i,end);
-            addToSet(set,cur);
+            char curEnding=s.charAt(i);
+            if(count==0){
+                count+=1;
+                alphabet[curEnding-'a']=Math.max(alphabet[curEnding-'a'],count);
+                continue;
+            }
+            if(isContinuous(s.charAt(i-1),curEnding)){
+                count+=1;
+                alphabet[curEnding-'a']=Math.max(alphabet[curEnding-'a'],count);
+            }
+            else{
+                count=1;
+                alphabet[curEnding-'a']=Math.max(alphabet[curEnding-'a'],count);
+            }
         }
-        for(String t:set){
-            System.out.println(t);
-        }
-        return set.size();
+        return Arrays.stream(alphabet).sum();
     }
 
 
