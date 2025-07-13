@@ -259,4 +259,32 @@ public class AnonymousProblems {
         }
         return solve_findMaxForm(size,0,count_digit,m,n,dp);
     }
+
+    private List<List<Integer>> solvePermute(int[]nums,int index){
+        if(index==nums.length-1){
+            List<List<Integer>> res = new ArrayList<>();
+            res.add(new ArrayList<>(List.of(nums[index])));
+            return res;
+        }
+        List<List<Integer>> permutationOfN_minus1=solvePermute(nums,index+1);
+        List<List<Integer>> permutationOfN=new ArrayList<>();
+        int n=permutationOfN_minus1.size();
+        for (List<Integer> cur : permutationOfN_minus1) {
+            int curSize = cur.size();
+            cur.addFirst(nums[index]);
+            permutationOfN.add(new ArrayList<>(cur));
+            int count = 0;
+            while (count < curSize) {
+                Collections.swap(cur, count, count + 1);
+                List<Integer> t = new ArrayList<>(cur);
+                permutationOfN.add(t);
+                count += 1;
+            }
+        }
+        return permutationOfN;
+    }
+    //url: https://leetcode.com/problems/permutations/description/
+    public List<List<Integer>> permute(int[] nums) {
+        return solvePermute(nums,0);
+    }
 }
