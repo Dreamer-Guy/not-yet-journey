@@ -19,7 +19,8 @@ public class Main {
         String[] strs = {"10", "0001", "111001", "1", "0"};
         int m=5;
         int n=3;
-        var t= anonymousProblems.permute(a);
-        System.out.println(t.size());
+        String s="())()";
+        var t= anonymousProblems.longestValidParentheses(s);
+        System.out.println(t);
     }
 }

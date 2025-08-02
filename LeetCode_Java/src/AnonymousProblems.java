@@ -287,4 +287,45 @@ public class AnonymousProblems {
     public List<List<Integer>> permute(int[] nums) {
         return solvePermute(nums,0);
     }
+
+    //url: https://leetcode.com/problems/longest-valid-parentheses/
+    public int longestValidParentheses(String s) {
+        int res=0;
+        int currentSequence=0;
+        int open=0;
+        int close=0;
+        int n=s.length();
+        for(int i=0;i<n;++i){
+            if(s.charAt(i)=='('){
+                open+=1;
+            }
+            else{
+                close+=1;
+            }
+            int difference=open-close;
+            if(difference==0){
+                currentSequence+=close*2;
+                res=Math.max(res,currentSequence);
+                open=0;
+                close=0;
+            }
+            else if(difference>0){
+                if(s.charAt(i)==')'){
+                    int count=0;
+                    int temp=i;
+                    while(temp<n && s.charAt(temp)==')'){
+                        count+=1;
+                        temp+=1;
+                    }
+                    res=Math.max(res,count*2);
+                }
+            }
+            else {
+                currentSequence=0;
+                open=0;
+                close=0;
+            }
+        }
+        return res;
+    }
 }
