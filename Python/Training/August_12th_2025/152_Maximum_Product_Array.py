@@ -1,5 +1,8 @@
 #url: https://leetcode.com/problems/maximum-product-subarray/description/
 
+# Time: 0(n)
+# Space: 0(1)
+
 class Solution(object):
     def maxProduct(self, nums):
         """

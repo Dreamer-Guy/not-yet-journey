@@ -1,5 +1,8 @@
 #url: https://leetcode.com/problems/target-sum/description/
 
+# Time: 0(n*difference)
+# Space: 0(n*difference)
+
 class Solution(object):
     def findTargetSumWays(self, nums, target):
         """
